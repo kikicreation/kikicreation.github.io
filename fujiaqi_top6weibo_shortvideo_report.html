@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汽车垂类视频 Report · KIKI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --paper: #F7F5F0;
+    --champagne: #B8A584;
+    --champagne-light: #D4C5A9;
+    --gray: #999999;
+    --gray-light: #E5E1DA;
+    --line: #D8D4CC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    text-align: center;
+    padding: 72px 24px 52px;
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-eyebrow {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--champagne);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif SC', 'Times New Roman', serif;
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.15;
+    color: var(--black);
+  }
+  .hero h1 .accent {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    color: var(--champagne);
+  }
+  .hero-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--champagne);
+    margin: 28px auto 0;
+  }
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* ===== SUMMARY ===== */
+  .summary {
+    display: flex;
+    justify-content: center;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .summary-item {
+    flex: 1;
+    max-width: 220px;
+    padding: 32px 20px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+  }
+  .summary-item:last-child { border-right: none; }
+  .summary-num {
+    font-family: 'Times New Roman', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1;
+  }
+  .summary-unit {
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 400;
+  }
+  .summary-label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  /* ===== GRID SECTION ===== */
+  .gallery {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 32px 72px;
+  }
+  .gallery-label {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .gallery-label .ko {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--champagne);
+    letter-spacing: 2px;
+  }
+  .gallery-label .cn {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 36px;
+  }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    position: relative;
+  }
+  .card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    border-color: var(--champagne-light);
+  }
+
+  /* Rank number — top-right */
+  .rank {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 700;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+  .rank.r1 { background: var(--champagne); color: var(--black); }
+  .rank.r2 { background: #9a9a9a; }
+  .rank.r3 { background: #b08d57; }
+
+  /* Image area — fixed aspect-ratio for perfect row alignment */
+  .card-image {
+    background: #fff;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    aspect-ratio: 1240 / 880;
+    position: relative;
+  }
+  .card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: opacity 0.3s ease;
+  }
+  .card:hover .card-image img { opacity: 0.92; }
+
+  /* ===== ONE ROW DATA BAR — play + likes/comments/shares inline ===== */
+  .data-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 13px 20px;
+    background: var(--paper);
+    min-height: 54px;
+  }
+  .data-play {
+    font-family: 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--black);
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+  .data-play .unit {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray);
+  }
+  .data-sep {
+    width: 1px;
+    height: 22px;
+    background: var(--line);
+    margin: 0 16px;
+    flex-shrink: 0;
+  }
+  .data-engage {
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap;
+  }
+  .de-item {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    white-space: nowrap;
+  }
+  .de-item .num {
+    font-family: 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--black);
+  }
+  .de-item .label {
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Card body — text content */
+  .card-body {
+    padding: 22px 26px 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .card-brand {
+    font-family: 'Noto Serif SC', 'Times New Roman', serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: 0.5px;
+    line-height: 1.35;
+    min-height: 42px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .card-date {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+  .card-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.8;
+    font-weight: 400;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-link {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--champagne);
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Times New Roman', serif;
+    transition: color 0.25s;
+    align-self: flex-start;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .card-link:hover {
+    color: var(--black);
+    border-bottom-color: var(--black);
+  }
+
+  /* ===== NOTES ===== */
+  .notes {
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 56px 32px;
+  }
+  .notes-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .notes-title {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .notes-title .en {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--champagne);
+    letter-spacing: 2px;
+  }
+  .notes-title .cn {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .notes-list {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+  .notes-list li {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+    padding-left: 18px;
+    position: relative;
+  }
+  .notes-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 1px;
+    background: var(--champagne);
+  }
+  .notes-list strong {
+    color: var(--black);
+    font-weight: 700;
+    font-family: 'Times New Roman', serif;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--black);
+    color: var(--gray);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .footer .brand {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--champagne);
+    letter-spacing: 1px;
+    text-transform: none;
+    margin-bottom: 8px;
+  }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.96);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 88vw;
+    max-height: 88vh;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-size: 28px;
+    color: var(--black);
+    cursor: pointer;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-eyebrow">Automotive Vertical Video</div>
+  <h1>汽车垂类视频 <span class="accent">Report</span></h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">KIKI 出镜作品 · 精选 Top 6 / 共计 50+ 条</p>
+</header>
+
+<!-- ===== SUMMARY ===== -->
+<div class="summary">
+  <div class="summary-item">
+    <div class="summary-num">50<span class="summary-unit">+</span></div>
+    <div class="summary-label">总出镜视频</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">6<span class="summary-unit"> 条精选</span></div>
+    <div class="summary-label">本报告展示</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">255<span class="summary-unit">万+</span></div>
+    <div class="summary-label">Top6 累计播放</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">1,800<span class="summary-unit"></span></div>
+    <div class="summary-label">Top6 总点赞</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">316<span class="summary-unit"></span></div>
+    <div class="summary-label">Top6 总互动</div>
+  </div>
+</div>
+
+<!-- ===== GALLERY ===== -->
+<section class="gallery">
+  <div class="gallery-label">
+    <div class="ko">Featured Works</div>
+    <div class="cn">按播放量排序 · Top 6 精选</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- #1 -->
+    <article class="card">
+      <div class="rank r1">1</div>
+      <div class="card-image" onclick="openLightbox('images/zhiqi_l6.png')">
+        <img src="images/zhiqi_l6.png" alt="智己L6 马蒂斯红">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">84.7<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">416</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">33</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">34</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">智己 L6 · 马蒂斯红</div>
+        <div class="card-date">2025 · 04 · 17</div>
+        <div class="card-text">智己 L6 都市秀场预售发布，马蒂斯红惊艳登场。KIKI 遇到这台车直接走不动道——生活正当红，这台车也是。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/PnF5Bf86w" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+    <!-- #2 -->
+    <article class="card">
+      <div class="rank r2">2</div>
+      <div class="card-image" onclick="openLightbox('images/mengshi.png')">
+        <img src="images/mengshi.png" alt="猛士M817">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">52.3<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">446</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">27</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">55</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">猛士 M817</div>
+        <div class="card-date">2025 · 05 · 09</div>
+        <div class="card-text">当军工闯进民用赛道，勇士？还是猛士！KIKI 第一反应——什么车？辣么大！又辣么帅！乾崑智驾加持，越野王炸。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/PoKuvafzJ" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+    <!-- #3 -->
+    <article class="card">
+      <div class="rank r3">3</div>
+      <div class="card-image" onclick="openLightbox('images/jike.png')">
+        <img src="images/jike.png" alt="极氪 D2D 满血版">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">47.7<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">270</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">27</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">24</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">极氪 · D2D 智驾满血版</div>
+        <div class="card-date">2025 · 06 · 06</div>
+        <div class="card-text">极氪全新车位到车位（D2D）智驾，地库高速全程丝滑。科技给的安全感比多喝热水实在太多，KIKI 被彻底圈粉。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/Pj9se0bv4" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+    <!-- #4 -->
+    <article class="card">
+      <div class="rank">4</div>
+      <div class="card-image" onclick="openLightbox('images/zhiqi_rain.png')">
+        <img src="images/zhiqi_rain.png" alt="智己暴雨测试">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">27.9<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">172</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">16</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">17</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">智己 · 高速暴雨爆胎测试</div>
+        <div class="card-date">2025 · 05 · 23</div>
+        <div class="card-text">暴雨 + 高速 + 爆胎，三重极限叠加。KIKI 直面智己安全系统的终极考验，堵上性命的战斗级实测。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/PtSWwe72q" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+    <!-- #5 -->
+    <article class="card">
+      <div class="rank">5</div>
+      <div class="card-image" onclick="openLightbox('images/zhiqi_ls7.png')">
+        <img src="images/zhiqi_ls7.png" alt="智己LS7焕新版">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">27.5<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">303</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">19</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">22</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">智己 LS7 · 焕新版上市</div>
+        <div class="card-date">2025 · 04 · 26</div>
+        <div class="card-text">全球唯一全系标配四轮转向，超大前挡玻璃视野拉满。焕新 LS7 正式上市，KIKI 带你抢先体验这辆「看清世界」的车。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/PoLK59e0u" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+    <!-- #6 -->
+    <article class="card">
+      <div class="rank">6</div>
+      <div class="card-image" onclick="openLightbox('images/xiaopeng_g7.png')">
+        <img src="images/xiaopeng_g7.png" alt="小鹏G7">
+      </div>
+      <div class="data-bar">
+        <span class="data-play">14.8<span class="unit">万播放</span></span>
+        <div class="data-sep"></div>
+        <div class="data-engage">
+          <span class="de-item"><span class="num">193</span><span class="label">赞</span></span>
+          <span class="de-item"><span class="num">22</span><span class="label">评</span></span>
+          <span class="de-item"><span class="num">20</span><span class="label">转</span></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">小鹏 G7 全球首秀</div>
+        <div class="card-date">2025 · 06 · 01</div>
+        <div class="card-text">星际旷野座驾，懂科技更懂你。KIKI 说她的毕业礼物就想要这个——后排空间大到顶瓜瓜，G7 这波赢麻了。</div>
+        <a class="card-link" href="https://weibo.com/2775352495/PouXScc8z" target="_blank">View Post →</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ===== NOTES ===== -->
+<section class="notes">
+  <div class="notes-inner">
+    <div class="notes-title">
+      <div class="en">Data Notes</div>
+      <div class="cn">数据说明</div>
+    </div>
+    <ul class="notes-list">
+      <li><strong>数据来源</strong> — 波波玩个车微博（UID: 2775352495），登录态 API 实时抓取，截止 2025 年 6 月</li>
+      <li><strong>样本说明</strong> — KIKI 共出镜拍摄 50+ 条汽车垂类视频，本报告选取播放量最高的 Top 6 条进行展示</li>
+      <li><strong>排序基准</strong> — 微博平台视频播放量；阅读量均为「100万+」，以播放量为核心指标排序</li>
+      <li><strong>时间跨度</strong> — 2025 年 4 月至 6 月，覆盖上海车展及后续新车发布密集期</li>
+      <li><strong>品牌分布</strong> — 智己（3 条）、猛士、极氪、小鹏，覆盖豪华新能源主流品牌矩阵</li>
+      <li><strong>互动亮点</strong> — 猛士 M817 点赞最高（446）；智己 L6 马蒂斯红播放量领跑（84.7 万）；极氪 D2D 智驾内容引发热议</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="brand">Automotive Vertical Video Report</div>
+  <div>KIKI · 出镜作品数据报告 · 波波玩个车 · Top 6 Selected from 50+</div>
+</footer>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lb-img" src="" alt="放大预览">
+</div>
+
+<script>
+function openLightbox(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+</script>
+</body>
+</html>
